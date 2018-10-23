@@ -1,23 +1,20 @@
 const http = require('http')
 const express = require('express');
 const app = express();
-const gju = require('geojson-utils');
-const gameArea = require('./gameData').gameArea;
+
+
+const apiRoute = require('./routes/api/apiRoute');
 
 app.get('/', (req, res) => {
-    res.send('Geo JSON, Demo. Goto /geoapi')
+    res.send(`
+    <h2> Geo JSON Demo working resources: </h2>
+    <ul>
+        <li> /geoapi/locations/isplayerinarea/:lon/:lat </li>
+    </ul>
+    `)
 });
 
-app.get('/geoapi/isplayerinarea/:lon/:lat', (req, res) => {
-    const lon = req.params.lon;
-    const lat = req.params.lat;
-    const playerPoint = {type: "Point", coordinates: [lon, lat]}
-
-    const status = gju.pointInPolygon(playerPoint, gameArea)
-    const msg = status ? 'Player is in game area' : 'Player is not in game area';
-
-    res.json({status, msg})
-});
+app.use('/geoapi', apiRoute)
 
 function geoServer(port, callback) {
     const server = http.createServer(app);
@@ -26,7 +23,6 @@ function geoServer(port, callback) {
         console.log(`Server started: Listening on ${port}`)
         if (callback) callback(server)
     });
-   
 }
 
 module.exports = geoServer;

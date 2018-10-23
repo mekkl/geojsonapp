@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 
 
-const apiRoute = require('./routes/api/apiRoute');
+const apiRouter = require('./routes/api/apiRouter');
 
 app.get('/', (req, res) => {
     res.send(`
@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
     `)
 });
 
-app.use('/geoapi', apiRoute)
+app.use('/geoapi', apiRouter)
 
 function geoServer(port, callback) {
     const server = http.createServer(app);

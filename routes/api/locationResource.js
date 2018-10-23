@@ -18,7 +18,7 @@ router.route('/ispointinarea/:lon/:lat')
     res.json({status, msg})
 })
 
-router.route('/distancetouser/:lon/:lat/:username')
+router.route('/distancetoplayer/:lon/:lat/:username')
 // get distance to a player from a point (in meters) (accessed at GET http://localhost:8080/geoapi/locations/distanceToUser/:lon/:lat/:username)
 .get(async function(req, res) {
     const lon = req.params.lon;
@@ -40,22 +40,19 @@ router.route('/distancetouser/:lon/:lat/:username')
     }
 })
 
-router.route('/findnearbyplayers/:lon/:lat/:rad')
-// get players in area with radius (in meters) (accessed at GET http://localhost:8080/geoapi/locations/findnearbyplayers/:lon/:lat)
+router.route('/playersinradius/:lon/:lat/:rad')
+// get players in area with radius (in meters) (accessed at GET http://localhost:8080/geoapi/locations/findnearbyplayers/:lon/:lat/:rad)
 .get(async function(req, res) {
     const lon = req.params.lon;
     const lat = req.params.lat;
     const rad = req.params.rad;
 
-    const center = gju.rectangleCentroid({
-        "type": "Polygon",
-        "coordinates": [[[lon, lat], [lon, lat]]]
-    });
+    const center = {type: "Point", coordinates: [lon, lat]}
     
     let nearbyPlayers = [];
 
     for (let i = 0; i < players.length; i++) {
-        if (gju.geometryWithinRadius(players[i], center, rad)) nearbyPlayers.push(players[i])
+        if (gju.pointDistance(players[i].geometry, center) <= rad) nearbyPlayers.push(players[i])
     }
     
     res.json({nearbyPlayers})

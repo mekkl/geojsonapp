@@ -1,0 +1,22 @@
+{
+  "name": "geojsonapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "yarn nodemon run.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "geojson-utils": "^1.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "nodemon": "^1.18.4",
+    "request": "^2.88.0"
+  }
+}
